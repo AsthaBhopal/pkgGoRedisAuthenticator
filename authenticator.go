@@ -21,6 +21,11 @@ type Auth struct {
 	initialized bool
 }
 
+const (
+	REDIS_CLIENT_STANDALONE = "standalone"
+	REDIS_CLIENT_CLUSTER    = "cluster"
+)
+
 func (a *Auth) Initialize(ctx context.Context, clientType string, address string, username string, password string, privateKey string) error {
 	a.context = ctx
 	a.address = address
