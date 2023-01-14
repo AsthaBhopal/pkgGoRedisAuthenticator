@@ -22,7 +22,7 @@ type Auth struct {
 }
 
 const (
-	REDIS_CLIENT_STANDALONE = "standalone"
+	REDIS_CLIENT_STANDALONE = "single"
 	REDIS_CLIENT_CLUSTER    = "cluster"
 )
 
@@ -72,7 +72,7 @@ type RedisSwitcher struct {
 }
 
 func (a *Auth) setupRedisClient() {
-	if a.Client.Type == "single" {
+	if a.Client.Type == REDIS_CLIENT_STANDALONE {
 		a.Client.RedisDb = redis.NewClient(&redis.Options{
 			Addr:     a.address, //"3.110.49.227:6379", //"localhost:6379",
 			Username: a.username,
@@ -86,7 +86,7 @@ func (a *Auth) setupRedisClient() {
 			panic(err)
 		}
 	} else {
-		a.Client.Type = "cluster"
+		a.Client.Type = REDIS_CLIENT_CLUSTER
 		a.Client.RedisClusterDb = redis.NewClusterClient(&redis.ClusterOptions{
 			Addrs:    []string{a.address},
 			Username: a.username,
