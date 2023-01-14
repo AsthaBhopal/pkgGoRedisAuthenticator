@@ -39,7 +39,7 @@ func (a *Auth) Initialize(ctx context.Context, clientType string, address string
 	return nil
 }
 
-func (a *Auth) Authenticate(access_token string) string {
+func (a *Auth) Authenticate(access_token string, ctx context.Context) string {
 	access_array := strings.Split(access_token, ".")
 	data, _ := base64.RawStdEncoding.DecodeString(access_array[1])
 	var tokenData odinTokenData
@@ -48,7 +48,7 @@ func (a *Auth) Authenticate(access_token string) string {
 		return ""
 	}
 	clientCode := tokenData.MemberInfo.ClientCode
-	presence, err := a.Client.Get(a.context, "at_"+clientCode+":"+access_token).Bool()
+	presence, err := a.Client.Get(ctx, "at_"+clientCode+":"+access_token).Bool()
 	if err != nil {
 		return ""
 	}
